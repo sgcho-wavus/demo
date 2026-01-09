@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.0.0'
+    id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
-    
-    // Kotlin 플러그인 (Spring Boot 4.0.0은 Kotlin 2.2+ 필요)
-    id 'org.jetbrains.kotlin.jvm' version '2.2.21'
-    id 'org.jetbrains.kotlin.plugin.spring' version '2.2.21'
-    id 'org.jetbrains.kotlin.plugin.jpa' version '2.2.21'
+
+    // Kotlin 플러그인
+    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
+    id 'org.jetbrains.kotlin.plugin.spring' version '2.1.0'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '2.1.0'
 }
 
 group = 'com.example'
@@ -30,17 +30,32 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    
-    // Lombok (Java 클래스용)
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
+
+    // Database
+    runtimeOnly 'com.h2database:h2'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -48,7 +63,7 @@ dependencies {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += ["-Xjsr305=strict", "-Xannotation-default-target=param-property"]
+        freeCompilerArgs += ["-Xjsr305=strict"]
     }
 }
 
